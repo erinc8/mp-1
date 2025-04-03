@@ -1,26 +1,34 @@
-import { fetchArtworkDetails } from '@/services/api';
 
-export default async function ArtworkPage({
-                                              params
-                                          }: {
-    params: { id: string }
-}) {
-    const artwork = await fetchArtworkDetails(params.id);
+
+import ArtworkDetails from '@/components/ArtworkDetails'
+
+async function fetchArtwork(id: string) {
+    const res = await fetch(`/api/artworks/${id}`);
+
+    if (!res.ok) {
+        throw new Error('Failed to load artwork');
+    }
+
+    return res.json();
+}
+
+export default async function ArtworkPage({ params }: { params: { id: string } }) {
+    const artwork = await fetchArtwork(params.id);
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-4xl font-bold mb-4">{artwork.title}</h1>
-            <div className="grid md:grid-cols-2 gap-8">
+        <div className="max-w-4xl mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-4">{artwork.title}</h1>
+            {artwork.primaryimageurl && (
                 <img
                     src={artwork.primaryimageurl}
                     alt={artwork.title}
-                    className="w-full h-96 object-cover"
+                    className="mb-6 rounded-lg shadow-lg"
                 />
-                <div>
-                    <p className="text-lg mb-2">Artist: {artwork.people?.[0]?.name || 'Unknown'}</p>
-                    <p className="text-lg mb-2">Date: {artwork.dated}</p>
-                    <p className="text-lg mb-2">Medium: {artwork.medium}</p>
-                </div>
+            )}
+            <div className="space-y-2">
+                <p><strong>Artist:</strong> {artwork.people?.[0]?.name || 'Unknown'}</p>
+                <p><strong>Medium:</strong> {artwork.medium}</p>
+                <p><strong>Date:</strong> {artwork.dated}</p>
             </div>
         </div>
     );
