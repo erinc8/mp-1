@@ -1,27 +1,10 @@
-import { fetchArtworkDetails } from '@/services/api';
-
-export default async function ArtworkPage({
-                                            params
-                                          }: {
-  params: { id: string }
-}) {
-  const artwork = await fetchArtworkDetails(params.id);
-
-  return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-4">{artwork.title}</h1>
-        <div className="grid md:grid-cols-2 gap-8">
-          <img
-              src={artwork.primaryimageurl}
-              alt={artwork.title}
-              className="w-full h-96 object-cover"
-          />
-          <div>
-            <p className="text-lg mb-2">Artist: {artwork.people?.[0]?.name || 'Unknown'}</p>
-            <p className="text-lg mb-2">Date: {artwork.dated}</p>
-            <p className="text-lg mb-2">Medium: {artwork.medium}</p>
-          </div>
+export default function Home() {
+    return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+            <h1 className="text-6xl font-extrabold mb-4">CS391</h1>
+            <p className="text-lg font-medium">
+                Welcome to the CS391 homepage. Explore and enjoy!
+            </p>
         </div>
-      </div>
-  );
+    );
 }
